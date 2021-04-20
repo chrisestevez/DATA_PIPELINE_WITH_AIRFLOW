@@ -56,17 +56,17 @@ The source data resides in S3 and needs to be processed in Sparkify's data wareh
 
 - aws_credentials
 
-<img src="./imgs/aws.png"  weight="600" height="500"/>
+<img src="./imgs/aws.PNG"  weight="600" height="500"/>
     
 - redshift
     
-<img src="./imgs/redshift.png"  weight="600" height="500"/>
+<img src="./imgs/redshift.PNG"  weight="600" height="500"/>
 
 - Load dags, helpers & operator files to Apache Airflow
 
 - Run Dag
 
-<img src="./imgs/run.png"  weight="600" height="500"/>
+<img src="./imgs/run.PNG"  weight="600" height="500"/>
 
 
 
