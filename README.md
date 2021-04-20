@@ -53,13 +53,14 @@ The source data resides in S3 and needs to be processed in Sparkify's data wareh
 - Install [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/start/index.html) & missing dependencies
 
 - Setup credentials within Apache Airflow via Admin -> Connections
-    - aws_credentials
 
-    <img src="./imgs/aws.png"  weight="600" height="500"/>
+- aws_credentials
+
+<img src="./imgs/aws.png"  weight="600" height="500"/>
     
-    - redshift
+- redshift
     
-    <img src="./imgs/redshift.png"  weight="600" height="500"/>
+<img src="./imgs/redshift.png"  weight="600" height="500"/>
 
 - Load dags, helpers & operator files to Apache Airflow
 
