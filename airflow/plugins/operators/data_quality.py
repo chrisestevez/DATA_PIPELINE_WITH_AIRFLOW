@@ -10,7 +10,6 @@ class DataQualityOperator(BaseOperator):
 
     Raises:
         ValueError: No results found.
-        ValueError: No rows found.
     """
     ui_color = '#89DA59'
 
@@ -18,11 +17,13 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                   redshift_conn_id='',
                   tables=[],
+                  sql_qry=[],
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
-        self.table = tables
         self.redshift_conn_id = redshift_conn_id
+        self.table = tables
+        self.sql_qry = sql_qry
 
     def execute(self, context):
         """Executes logic for custom operator.
@@ -32,21 +33,21 @@ class DataQualityOperator(BaseOperator):
 
         Raises:
             ValueError: No results found.
-            ValueError: No rows found.
         """
         self.log.info('Checking ETL Results')
         redshift =  PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
         for table in self.table:
             
-            data = redshift.get_records(f"SELECT COUNT(*) FROM {table}")
-            
-            if len(data) < 1 | len(data[0])<1:
+            for check in self.sql_qry:
                 
-                raise ValueError(f'{table} check failed no results found.')
-            
-            if data[0][0] < 1:
+                sql = check.get('check_sql')
+                exp_result = check.get('expected_result')
                 
-                raise ValueError(f'{table} contained no rows.')
-            
-            self.log.info(f'Quality checks passed for {table}')
+                if redshift.run(sql.format(table)) >exp_result:
+                    self.log.info(f'Quality checks passed for {table}')
+                else:
+                    self.log.info(f'Quality checks Failed for {table}')
+                    self.log.info(sql)
+                    raise ValueError(f'{table} check failed no results found.')
+                    
